@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -65,7 +66,11 @@ const Index = () => {
         >
           <div className="flex items-center mb-4 md:mb-0">
             <div className="bg-white p-3 rounded-xl shadow-sm">
-              <img src="/sentido_emme_logo.png" alt="Logo Sentido EME" className="h-12" />
+              <img 
+                src="/lovable-uploads/7015b2c7-f2cd-4d62-83db-08ce6ee70cb1.png" 
+                alt="Logo Sentido EME" 
+                className="h-12" 
+              />
             </div>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-[#6E6EAA] text-center md:text-right">
