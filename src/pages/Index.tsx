@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -144,8 +143,8 @@ const Index = () => {
                     </div>
                     <Progress 
                       value={loadedProgress ? calcularPorcentaje(actividad.valor, actividad.total) : 0} 
-                      className="h-2 bg-gray-100" 
-                      indicatorClassName={`bg-[${actividad.color}]`}
+                      className="h-2 bg-gray-100"
+                      indicatorColor={actividad.color}
                     />
                   </div>
                 ))}
