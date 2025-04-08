@@ -70,7 +70,7 @@ const Index = () => {
           <div className="flex items-center mb-4 md:mb-0">
             <div className="bg-white p-3 rounded-xl shadow-sm">
               <img 
-                src="/lovable-uploads/7015b2c7-f2cd-4d62-83db-08ce6ee70cb1.png" 
+                src="/7015b2c7-f2cd-4d62-83db-08ce6ee70cb1.png" 
                 alt="Logo Sentido EME" 
                 className="h-10 md:h-12" 
               />
@@ -152,7 +152,9 @@ const Index = () => {
                     <Progress 
                       value={loadedProgress ? calcularPorcentaje(actividad.valor, actividad.total) : 0} 
                       className="h-2 bg-gray-100"
-                      indicatorColor={actividad.color}
+                      style={{
+                        "--progress-indicator-color": actividad.color
+                      } as React.CSSProperties}
                     />
                   </div>
                 ))}
@@ -306,7 +308,10 @@ const Index = () => {
                       <XAxis 
                         dataKey="name" 
                         fontSize={isMobile ? 10 : 12}
-                        tick={{ angle: isMobile ? -15 : 0 }}
+                        tick={{
+                          transform: isMobile ? "rotate(-15)" : "rotate(0)",
+                          textAnchor: isMobile ? "end" : "middle"
+                        }}
                         tickMargin={isMobile ? 5 : 10}
                         height={isMobile ? 50 : 30}
                       />
