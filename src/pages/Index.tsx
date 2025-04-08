@@ -20,7 +20,7 @@ const Index = () => {
   
   // Estado para almacenar los datos del participante
   const [userData, setUserData] = useState({
-    nickname: "Florencia",
+    nombre: "Florencia",
     fecha: "2025-04-08",
     diasActivos: 38,
     meditaciones: 28,
@@ -86,12 +86,12 @@ const Index = () => {
   
   // Mensajes personalizados según el tipo
   const mensajePersonalizado = useMemo(() => {
-    const { nickname } = userData;
+    const { nombre } = userData;
     
     if (variacionPorcentualTermometros < 0 && variacionPorcentualIndice < 0) {
       return {
         titulo: "Una oportunidad para aprender",
-        mensaje: `${nickname}, una disminución en estos indicadores no significa necesariamente un retroceso. A veces, al profundizar en ti, emergen emociones que necesitan ser observadas y comprendidas antes de lograr una transformación estable. También es posible que te encuentres en un momento de cambio en tu vida que influya en tu percepción y en las respuestas objetivas.`,
+        mensaje: `${nombre}, una disminución en estos indicadores no significa necesariamente un retroceso. A veces, al profundizar en ti, emergen emociones que necesitan ser observadas y comprendidas antes de lograr una transformación estable. También es posible que te encuentres en un momento de cambio en tu vida que influya en tu percepción y en las respuestas objetivas.`,
         recomendaciones: [
           "No interpretes la disminución como un retroceso, sino como una oportunidad para profundizar en tu autoconocimiento.",
           "Reflexiona sobre los cambios internos que has notado y cómo se relacionan con tu experiencia en el programa.",
@@ -106,7 +106,7 @@ const Index = () => {
       case "termometrosMejor":
         return {
           titulo: "Mayor percepción de bienestar",
-          mensaje: `${nickname}, tu percepción de bienestar medida por los termómetros mejoró más que tu Índice Eme de Bienestar. Has experimentado un cambio profundo en la forma en que te percibes, aunque los indicadores objetivos aún no reflejen completamente esta transformación. Estás desarrollando una mayor consciencia de tu bienestar y reconociendo matices que antes pasaban desapercibidos.`,
+          mensaje: `${nombre}, tu percepción de bienestar medida por los termómetros mejoró más que tu Índice Eme de Bienestar. Has experimentado un cambio profundo en la forma en que te percibes, aunque los indicadores objetivos aún no reflejen completamente esta transformación. Estás desarrollando una mayor consciencia de tu bienestar y reconociendo matices que antes pasaban desapercibidos.`,
           recomendaciones: [
             "Seguir realizando las prácticas del programa para consolidar tu transformación.",
             "Reflexionar sobre qué aspectos del programa te generaron mayor impacto e incluirlos en tu vida cotidiana.",
@@ -116,8 +116,8 @@ const Index = () => {
         };
       case "indiceMejor":
         return {
-          titulo: "Mejora objetiva en bienestar",
-          mensaje: `${nickname}, tu Índice Eme de bienestar mejoró más que tus termómetros de autopercepción. Tus respuestas objetivas reflejan una mejoría real en tu bienestar, aunque es posible que aún no lo percibas con total claridad. A veces los cambios profundos toman tiempo en integrarse a nivel emocional y mental y en la vida cotidiana.`,
+          titulo: "Mejora objetiva en Bienestar",
+          mensaje: `${nombre}, tu Índice Eme de Bienestar mejoró más que tus termómetros de autopercepción. Tus respuestas objetivas reflejan una mejoría real en tu bienestar, aunque es posible que aún no lo percibas con total claridad. A veces los cambios profundos toman tiempo en integrarse a nivel emocional y mental y en la vida cotidiana.`,
           recomendaciones: [
             "Revisa tus respuestas y los cambios que observaste en ellas. Reflexiona sobre el impacto que el cambio produce en tu vida cotidiana.",
             "Utiliza los termómetros de auto percepción de manera regular para identificar patrones y hacer más tangible la integración de los cambios.",
@@ -128,7 +128,7 @@ const Index = () => {
       case "equilibrado":
         return {
           titulo: "Transformación equilibrada",
-          mensaje: `${nickname}, lograste una transformación coherente entre lo que sientes y lo que refleja tu Índice Eme de bienestar. Has integrado cambios positivos de manera más estable. Esto refleja una conexión profunda con tu bienestar y una buena capacidad para sostener estos cambios en tu vida.`,
+          mensaje: `${nombre}, lograste una transformación coherente entre lo que sientes y lo que refleja tu Índice Eme de bienestar. Has integrado cambios positivos de manera más estable. Esto refleja una conexión profunda con tu bienestar y una buena capacidad para sostener estos cambios en tu vida.`,
           recomendaciones: [
             "Sigue cultivando tus prácticas favoritas de Equilibrio elemental.",
             "Identifica qué herramientas del programa fueron más efectivas para ti.",
@@ -139,7 +139,7 @@ const Index = () => {
       default:
         return {
           titulo: "Reflexión y recomendaciones",
-          mensaje: `${nickname}, has completado el programa Equilibrio Elemental. Este es el comienzo de un camino hacia un mayor bienestar.`,
+          mensaje: `${nombre}, has completado el programa Equilibrio Elemental. Este es el comienzo de un camino hacia un mayor bienestar.`,
           recomendaciones: [
             "Sigue practicando para consolidar tu transformación.",
             "Reflexiona sobre los contenidos que más te impactaron.",
@@ -163,8 +163,8 @@ const Index = () => {
           <div className="flex items-center mb-4 md:mb-0">
             <div className="bg-white p-3 rounded-xl shadow-sm">
               <img 
-                src="/7015b2c7-f2cd-4d62-83db-08ce6ee70cb1.png" 
-                alt="Logo Sentido EME" 
+                src="/lovable-uploads/188d9e88-3fa4-4f22-b5e6-8e2146ef3a7e.png" 
+                alt="Logo EME" 
                 className="h-10 md:h-12" 
               />
             </div>
@@ -190,9 +190,9 @@ const Index = () => {
             <CardContent className="pt-4 p-4 md:pt-6 md:p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-24 md:w-36">Nickname:</span>
+                  <span className="font-semibold text-gray-700 w-24 md:w-36">Nombre:</span>
                   <Badge variant="outline" className="font-medium text-[#8F82D5] ml-2 px-2 md:px-3 py-0.5 md:py-1">
-                    {userData.nickname}
+                    {userData.nombre}
                   </Badge>
                 </div>
                 <div className="flex items-center">
@@ -474,7 +474,7 @@ const Index = () => {
                 </div>
                 
                 <div className="bg-blue-50/60 rounded-lg p-4 md:p-5 text-center text-gray-700 text-sm md:text-base italic">
-                  {userData.nickname}, Felicitaciones por completar Equilibrio Elemental, programa de Sentido EME para explorar, revelar y transformar tu bienestar. Te invito a integrar lo aprendido en tu cotidianidad y continuar tu proceso de vida, un paso a la vez.
+                  {userData.nombre}, felicitaciones por completar Equilibrio Elemental, programa de Sentido EME para explorar, revelar y transformar tu bienestar. Te invito a integrar lo aprendido en tu cotidianidad y continuar tu proceso de vida, un paso a la vez.
                 </div>
               </div>
             </CardContent>
