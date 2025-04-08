@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   Cell, LabelList 
 } from 'recharts';
 import { 
   Calendar, CheckCircle, Wind, Heart, Ear, Award, ArrowRight, ArrowUp, 
-  MailIcon 
+  MailIcon, AlertCircle, TrendingUp, Scale
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -56,6 +56,99 @@ const Index = () => {
   
   // Calcular el porcentaje de actividades completadas
   const calcularPorcentaje = (valor, total) => (valor / total) * 100;
+  
+  // Cálculo de variación porcentual para el índice EME
+  const variacionPorcentualIndice = useMemo(() => {
+    const inicial = userData.indiceInicial;
+    const final = userData.indiceFinal;
+    return inicial === 0 ? 0 : ((final - inicial) / inicial) * 100;
+  }, [userData.indiceInicial, userData.indiceFinal]);
+  
+  // Cálculo de variación porcentual para los termómetros
+  const variacionPorcentualTermometros = useMemo(() => {
+    const sumaBefore = userData.estadosSemana.reduce((acc, week) => acc + week.antes, 0);
+    const sumaAfter = userData.estadosSemana.reduce((acc, week) => acc + week.despues, 0);
+    return sumaBefore === 0 ? 0 : ((sumaAfter - sumaBefore) / sumaBefore) * 100;
+  }, [userData.estadosSemana]);
+  
+  // Determinar el tipo de mensaje basado en la comparación
+  const tipoMensaje = useMemo(() => {
+    const diferencia = Math.abs(variacionPorcentualTermometros - variacionPorcentualIndice);
+    
+    if (diferencia <= 10) {
+      return "equilibrado";
+    } else if (variacionPorcentualTermometros > variacionPorcentualIndice) {
+      return "termometrosMejor";
+    } else {
+      return "indiceMejor";
+    }
+  }, [variacionPorcentualTermometros, variacionPorcentualIndice]);
+  
+  // Mensajes personalizados según el tipo
+  const mensajePersonalizado = useMemo(() => {
+    const { nickname } = userData;
+    
+    if (variacionPorcentualTermometros < 0 && variacionPorcentualIndice < 0) {
+      return {
+        titulo: "Una oportunidad para aprender",
+        mensaje: `${nickname}, una disminución en estos indicadores no significa necesariamente un retroceso. A veces, al profundizar en ti, emergen emociones que necesitan ser observadas y comprendidas antes de lograr una transformación estable. También es posible que te encuentres en un momento de cambio en tu vida que influya en tu percepción y en las respuestas objetivas.`,
+        recomendaciones: [
+          "No interpretes la disminución como un retroceso, sino como una oportunidad para profundizar en tu autoconocimiento.",
+          "Reflexiona sobre los cambios internos que has notado y cómo se relacionan con tu experiencia en el programa.",
+          "Identifica qué herramientas del programa te resultaron más útiles y continúa explorándolas.",
+          "Si lo sientes necesario, busca apoyo adicional para acompañar tu proceso de transformación."
+        ],
+        icon: AlertCircle
+      };
+    }
+    
+    switch (tipoMensaje) {
+      case "termometrosMejor":
+        return {
+          titulo: "Mayor percepción de bienestar",
+          mensaje: `${nickname}, tu percepción de bienestar medida por los termómetros mejoró más que tu Índice Eme de Bienestar. Has experimentado un cambio profundo en la forma en que te percibes, aunque los indicadores objetivos aún no reflejen completamente esta transformación. Estás desarrollando una mayor consciencia de tu bienestar y reconociendo matices que antes pasaban desapercibidos.`,
+          recomendaciones: [
+            "Seguir realizando las prácticas del programa para consolidar tu transformación.",
+            "Reflexionar sobre qué aspectos del programa te generaron mayor impacto e incluirlos en tu vida cotidiana.",
+            "De tanto en tanto, revisa el cuestionario y nota los cambios que se producen con la continuación de tu rutina de autocuidado."
+          ],
+          icon: Heart
+        };
+      case "indiceMejor":
+        return {
+          titulo: "Mejora objetiva en bienestar",
+          mensaje: `${nickname}, tu Índice Eme de bienestar mejoró más que tus termómetros de autopercepción. Tus respuestas objetivas reflejan una mejoría real en tu bienestar, aunque es posible que aún no lo percibas con total claridad. A veces los cambios profundos toman tiempo en integrarse a nivel emocional y mental y en la vida cotidiana.`,
+          recomendaciones: [
+            "Revisa tus respuestas y los cambios que observaste en ellas. Reflexiona sobre el impacto que el cambio produce en tu vida cotidiana.",
+            "Utiliza los termómetros de auto percepción de manera regular para identificar patrones y hacer más tangible la integración de los cambios.",
+            "En las noches, retoma los ejercicios de auto observación para que puedas notar y agradecer con mayor claridad la transformación de tu bienestar."
+          ],
+          icon: Scale
+        };
+      case "equilibrado":
+        return {
+          titulo: "Transformación equilibrada",
+          mensaje: `${nickname}, lograste una transformación coherente entre lo que sientes y lo que refleja tu Índice Eme de bienestar. Has integrado cambios positivos de manera más estable. Esto refleja una conexión profunda con tu bienestar y una buena capacidad para sostener estos cambios en tu vida.`,
+          recomendaciones: [
+            "Sigue cultivando tus prácticas favoritas de Equilibrio elemental.",
+            "Identifica qué herramientas del programa fueron más efectivas para ti.",
+            "Explorar nuevas formas de incorporar las prácticas de estas semanas, en tu proceso cotidiano de autoconocimiento y bienestar."
+          ],
+          icon: TrendingUp
+        };
+      default:
+        return {
+          titulo: "Reflexión y recomendaciones",
+          mensaje: `${nickname}, has completado el programa Equilibrio Elemental. Este es el comienzo de un camino hacia un mayor bienestar.`,
+          recomendaciones: [
+            "Sigue practicando para consolidar tu transformación.",
+            "Reflexiona sobre los contenidos que más te impactaron.",
+            "Repite el cuestionario para observar tu evolución."
+          ],
+          icon: Heart
+        };
+    }
+  }, [tipoMensaje, userData, variacionPorcentualTermometros, variacionPorcentualIndice]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 pb-10">
@@ -342,7 +435,7 @@ const Index = () => {
           </Card>
         </motion.div>
 
-        {/* Recomendaciones */}
+        {/* Recomendaciones - Mejorada */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -351,27 +444,39 @@ const Index = () => {
           <Card className="mb-4 md:mb-6 overflow-hidden bg-white/80 backdrop-blur-sm border-none shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="bg-gradient-to-r from-purple-100 to-blue-100 pb-2 p-4 md:p-6">
               <CardTitle className="flex items-center text-[#6E6EAA] text-lg md:text-xl">
-                <Heart className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                Reflexión y recomendaciones
+                {mensajePersonalizado.icon && <mensajePersonalizado.icon className="h-4 w-4 md:h-5 md:w-5 mr-2" />}
+                {mensajePersonalizado.titulo}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4 p-4 md:pt-6 md:p-6">
-              <ul className="space-y-3 md:space-y-4">
-                {[
-                  'Sigue practicando para consolidar tu transformación.',
-                  'Reflexiona sobre los contenidos que más te impactaron.',
-                  'Repite el cuestionario para observar tu evolución.'
-                ].map((recomendacion, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0 mr-2 md:mr-3">
-                      <div className="bg-purple-100 text-[#8F82D5] rounded-full p-1 md:p-1.5">
-                        <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
-                      </div>
-                    </div>
-                    <p className="text-gray-700 text-xs md:text-sm">{recomendacion}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="space-y-4 md:space-y-6">
+                <div className="bg-purple-50/60 rounded-lg p-4 md:p-5 text-gray-700 text-sm md:text-base leading-relaxed">
+                  {mensajePersonalizado.mensaje}
+                </div>
+                
+                <div>
+                  <h4 className="text-[#6E6EAA] font-semibold mb-3 md:mb-4 text-sm md:text-base flex items-center">
+                    <CheckCircle className="h-3.5 w-3.5 md:h-4 md:w-4 mr-2 text-[#8F82D5]" />
+                    Te sugerimos:
+                  </h4>
+                  <ul className="space-y-3 md:space-y-4">
+                    {mensajePersonalizado.recomendaciones.map((recomendacion, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="flex-shrink-0 mr-2 md:mr-3">
+                          <div className="bg-purple-100 text-[#8F82D5] rounded-full p-1 md:p-1.5">
+                            <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
+                          </div>
+                        </div>
+                        <p className="text-gray-700 text-xs md:text-sm">{recomendacion}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="bg-blue-50/60 rounded-lg p-4 md:p-5 text-center text-gray-700 text-sm md:text-base italic">
+                  {userData.nickname}, Felicitaciones por completar Equilibrio Elemental, programa de Sentido EME para explorar, revelar y transformar tu bienestar. Te invito a integrar lo aprendido en tu cotidianidad y continuar tu proceso de vida, un paso a la vez.
+                </div>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
